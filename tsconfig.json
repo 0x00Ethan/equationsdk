@@ -1,0 +1,22 @@
+{
+  "include": ["src", "test"],
+  "compilerOptions": {
+    "lib": ["es2020", "esnext"],
+    "target": "es2020",
+    "module": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*", "node_modules/*"]
+    },
+    "esModuleInterop": true,
+  }
+}
+  
