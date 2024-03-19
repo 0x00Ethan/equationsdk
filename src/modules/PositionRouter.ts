@@ -28,19 +28,26 @@ export default class PositionRouter {
     positionMinExecutionFee: string;
     slippage: string;
     approval: Approval;
+    account: string;
 
     constructor(provider:Wallet, slippage = DEFAULT_SETTING_SLIPPAGE) {
         this.provider = provider;
         this.slippage = slippage;
         this.positionRouterContract = getPositionRouterContract(provider);
         this.positionMinExecutionFee = '0';
-        this.executionFee();
         this.approval = new Approval(provider)
+        this.account = '';
+        this.executionFee();
+        this.getAccount();
     }
 
     async executionFee() {
         const dataConfigInfo = await Markets.fetchGasConfig();
         this.positionMinExecutionFee = dataConfigInfo.positionExecutionFee;
+    }
+
+    async getAccount() {
+        this.account = await this.provider.getAddress();
     }
 
     async approvalPosition(){
@@ -127,7 +134,7 @@ export default class PositionRouter {
     ) {
         const marketAddresses = [market];
         const markets = await Markets.fetchMarketList();
-        const positions = await Markets.fetchPositions({"account": this.provider.address, "market": market});
+        const positions = await Markets.fetchPositions({"account": this.account, "market": market});
         const tokensPrice = await Markets.fetchMarketTokensPrice(marketAddresses);
         const tokensMultiPrice = await Markets.fetchMarketMultiTokens(marketAddresses);
 
@@ -166,7 +173,7 @@ export default class PositionRouter {
         const closeUnrealizedPnL = multipliedBy(lightenRatio, UnrealizedPnL);
         const marginDelta = isEqualTo(lightenRatio, 1) ? '0' : plus(multipliedBy(lightenRatio, positionInfo.margin), closeUnrealizedPnL);
         try {
-            const res = await this.positionRouterContract.createDecreasePosition(market, side, parseUnits(toDecimalPlaces(marginDelta,DEFAULT_QUOTE_PRECISION), DEFAULT_QUOTE_PRECISION), parseUnits(toDecimalPlaces(sizeDelta,DEFAULT_PRECISION), DEFAULT_PRECISION), acceptablePriceX96, this.provider.address, { value: this.positionMinExecutionFee })
+            const res = await this.positionRouterContract.createDecreasePosition(market, side, parseUnits(toDecimalPlaces(marginDelta,DEFAULT_QUOTE_PRECISION), DEFAULT_QUOTE_PRECISION), parseUnits(toDecimalPlaces(sizeDelta,DEFAULT_PRECISION), DEFAULT_PRECISION), acceptablePriceX96, this.account, { value: this.positionMinExecutionFee })
             return res.hash;
         } catch (error) {
             throw (`Failed to create decrease position request. ${error}`);

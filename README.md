@@ -1,6 +1,6 @@
-# Equation SDK
+# Equation SDK 
 
-🛠 An SDK for building applications on top of Equation.
+🛠 An SDK for building applications on top of Equation, Only supports Arbitrum One network.
 
 ## Installing
 

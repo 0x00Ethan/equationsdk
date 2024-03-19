@@ -61,7 +61,6 @@ class EquationSDK {
      * @returns { Promise<boolean> } A promise that resolves to true if the connection is successful, false otherwise.
      */
     async connect() {
-        console.log('this.Web3Provider',this.Web3Provider, this.provider)
         if (this.Web3Provider && this.providerName && !this.privateKey) {
             try {
                 this.wallet =  await this.Web3Provider.connect(this.providerName);
