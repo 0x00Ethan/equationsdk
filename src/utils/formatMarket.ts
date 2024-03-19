@@ -20,6 +20,9 @@ import {
 	toDecimalPlaces
 } from './';
 import { Side, QUOTE_USD_PRECISION } from '../config'
+import isBetween from 'dayjs/plugin/isBetween'
+dayjs.extend(isBetween)
+
 
 export function formatMarket(
 	marketsItem,
