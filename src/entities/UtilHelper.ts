@@ -1,7 +1,7 @@
 import { Q96, Side } from '../config';
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { IPriceVertex } from '../types';
 import {
 	div,
